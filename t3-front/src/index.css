@@ -1,9 +1,33 @@
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/woff2/Pretendard-Regular.woff2") format("woff2"),
+    url("./assets/fonts/woff2/Pretendard-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/fonts/woff2/Pretendard-Medium.woff2") format("woff2"),
+    url("./assets/fonts/woff2/Pretendard-Medium.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/woff2/Pretendard-Bold.woff2") format("woff2"),
+    url("./assets/fonts/woff2/Pretendard-Bold.woff") format("woff");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Pretendard", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 

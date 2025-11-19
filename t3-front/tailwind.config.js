@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Pretendard", "system-ui", "Avenir", "Helvetica", "Arial", "sans-serif"],
+      },
       colors: {
         // primary - 대표 색상
         "primary-green": "#00DE4D",
