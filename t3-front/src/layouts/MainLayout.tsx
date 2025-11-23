@@ -13,7 +13,7 @@ const MainLayout: React.FC = () => {
     },
     {
       name: "홈",
-      path: "/",
+      path: "/home",
       icon: FiHome,
     },
     {
@@ -48,8 +48,11 @@ const MainLayout: React.FC = () => {
 
               {/* 텍스트 */}
               <span
-                className={`text-sm mt-1 ${isActive ? "text-primary-green font-semibold" : "text-text-gray"
-                  }`}
+                className={`text-sm mt-1 ${
+                  isActive
+                    ? "text-primary-green font-semibold"
+                    : "text-text-gray"
+                }`}
               >
                 {tab.name}
               </span>
