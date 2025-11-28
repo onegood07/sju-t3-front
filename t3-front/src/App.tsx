@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
-import LoginSuccessPage from "./pages/Login/LoginSuccessPage";
+import LoginSuccessPage from "./pages/login/LoginSuccessPage";
 import ReportPage from "./pages/ReportPage";
-import ChattingPage from "./pages/ChattingPage";
-import LoginPage from "./pages/Login/LoginPage";
+import ChattingPage from "./pages/chatting/ChattingPage";
+import LoginPage from "./pages/login/LoginPage";
+import AddPage from "./pages/AddPage";
+import ChattingListPage from "./pages/chatting/ChattingListPage";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/login-success" element={<LoginSuccessPage />} />
           <Route path="/report" element={<ReportPage />} />
           <Route path="/chatting" element={<ChattingPage />} />
+          <Route path="/chatting-list" element={<ChattingListPage />} />
+          <Route path="/add" element={<AddPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

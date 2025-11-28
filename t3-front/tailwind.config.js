@@ -26,7 +26,7 @@ module.exports = {
 
         // 아이콘, line, 차트
         "icon-gray": "#ADADAD",
-        border: "#E7E7E7",
+        "border-line": "#E7E7E7",
         "gray-chart": "#EDEDED",
       },
     },

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore";
 import axios from "axios";
 
 const LoginSuccessPage = () => {
@@ -8,16 +9,28 @@ const LoginSuccessPage = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const token = params.get("token");
+    const tokenFromUrl = params.get("token");
 
-    if (token) {
-      getUser(token);
+    const setToken = useAuthStore((state) => state.setToken);
+
+    if (tokenFromUrl) {
+      setToken(tokenFromUrl);
+      getUser(tokenFromUrl);
+      return;
     }
+
+    const savedToken = sessionStorage.getItem("token");
+    if (savedToken) {
+      getUser(savedToken);
+      return;
+    }
+
+    navigate("/login", { replace: true });
   }, [location]);
 
   const getUser = async (token: string) => {
     try {
-      const res = await axios.get(`/api/user/me`, {
+      const res = await axios.get(`user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
