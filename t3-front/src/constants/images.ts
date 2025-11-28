@@ -5,6 +5,9 @@ import not from "../assets/images/not.png";
 import to from "../assets/images/to.png";
 import today from "../assets/images/today.png";
 import notDoDayThree from "../assets/images/notdoday-three.png";
+import halfDay from "../assets/images/half-day.png";
+import halfTo from "../assets/images/half-to.png";
+import halfNot from "../assets/images/half-not.png";
 
 export const IMAGES = {
   MASCOT: {
@@ -22,6 +25,12 @@ export const IMAGES = {
 
     THREE: {
       NOT_DO_DAY_THREE: notDoDayThree,
+    },
+
+    HALF: {
+      NOT: halfNot,
+      TO: halfTo,
+      DAY: halfDay,
     },
   },
 } as const;
