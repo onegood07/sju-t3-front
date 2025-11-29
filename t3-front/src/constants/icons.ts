@@ -1,6 +1,12 @@
 import { FaComment } from "react-icons/fa";
 import { FiHome, FiMessageCircle, FiBarChart2 } from "react-icons/fi";
-import { FaPlus, FaCheck, FaXmark, FaMagnifyingGlass } from "react-icons/fa6";
+import {
+  FaPlus,
+  FaCheck,
+  FaXmark,
+  FaMagnifyingGlass,
+  FaPaperPlane,
+} from "react-icons/fa6";
 import { TbSettings } from "react-icons/tb";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -16,4 +22,5 @@ export const ICONS = {
   ARROWBACK: IoIosArrowBack,
   ARROWFORWARD: IoIosArrowForward,
   SEARCH: FaMagnifyingGlass,
+  SEND: FaPaperPlane,
 } as const;
