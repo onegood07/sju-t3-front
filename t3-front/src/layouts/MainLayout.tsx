@@ -8,11 +8,25 @@ const MainLayout: React.FC = () => {
   const tabs = [
     { name: "리포트", path: "/report", icon: FiBarChart2 },
     { name: "홈", path: "/home", icon: FiHome },
-    { name: "채팅", path: "/chatting", icon: FiMessageCircle },
+    { name: "채팅", path: "/chatting-list", icon: FiMessageCircle },
   ];
 
-  const NO_TABBAR_PATHS = ["/", "/login", "/login-success", "/add"];
-  const WHITE_BG_PATHS = ["/login", "/login-success", "/add", "/chatting-list"];
+  const NO_TABBAR_PATHS = [
+    "/",
+    "/login",
+    "/login-success",
+    "/add",
+    "/update-goal",
+    "/update-amount",
+  ];
+  const WHITE_BG_PATHS = [
+    "/login",
+    "/login-success",
+    "/add",
+    "/chatting-list",
+    "/update-goal",
+    "/update-amount",
+  ];
 
   const containerBgClass = WHITE_BG_PATHS.includes(location.pathname)
     ? "bg-white-default"
