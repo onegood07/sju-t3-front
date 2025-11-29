@@ -1,4 +1,3 @@
-export * from "./KakaoAuth";
 export * from "./calendarApi";
 export * from "./chatApi";
 export * from "./goalApi";
