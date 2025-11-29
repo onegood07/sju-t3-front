@@ -3,7 +3,7 @@ import React from "react";
 interface InputProps {
   inputType: "input" | "chatting";
   placeholder?: string;
-  value?: string;
+  value?: string | number;
   label?: string;
   disabled?: boolean;
   className?: string;

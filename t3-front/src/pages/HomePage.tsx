@@ -1,6 +1,15 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "../components/common/Card";
-import { LABELS, APP_INFO, IMAGES, ICONS, SYMBOLS } from "../constants/";
+import {
+  getGoal,
+  getMonthlyAmount,
+  getExpenseCount,
+  getThisMonthIncomeExpenseBalance,
+  postMonthlyFeedback,
+  getTransaction,
+} from "../api/";
+import { LABELS, APP_INFO, IMAGES, ICONS, SYMBOLS, UNITS } from "../constants/";
 import {
   Button,
   ProgressBar,
@@ -9,38 +18,206 @@ import {
   SpendingCalendar,
   SpendingItem,
 } from "../components/";
+import { formatCurrency } from "../utils/";
+import {
+  useGoalStore,
+  useDateStore,
+  useMonthlyAmountStore,
+  useSpendingCountStore,
+  useCalendarSummaryStore,
+  useMonthlyFeedbackStore,
+  useTransactionStore,
+} from "../store/";
 
 const HomePage = () => {
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat("ko-KR").format(Math.abs(amount));
-  };
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const selectedYear = useDateStore((state) => state.selectedYear);
+  const selectedMonth = useDateStore((state) => state.selectedMonth);
+  const selectedDate = useDateStore((state) => state.selectedDate);
+
+  const { goal, setGoal } = useGoalStore();
+  const {
+    totalGoalAmount,
+    totalExpenseAmount,
+    totalIncomeAmount,
+    setMonthlyAmount,
+  } = useMonthlyAmountStore();
+  const { totalExpenseCount, impulseCount, plannedCount, setSpendingCount } =
+    useSpendingCountStore();
+  const { mascot } = useSpendingCountStore();
+  const { setCalendarSummary } = useCalendarSummaryStore();
+  const { summary, setFeedback } = useMonthlyFeedbackStore();
+  const { transactions, setTransactions } = useTransactionStore();
+
+  const today = new Date();
+  const lastDayOfMonth = new Date(selectedYear, selectedMonth, 0);
+  const remainingDays = Math.max(
+    Math.ceil(
+      (lastDayOfMonth.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+    ),
+    0
+  );
+
+  useEffect(() => {
+    console.log(
+      "선택된 날짜가 변경됨:",
+      selectedYear,
+      selectedMonth,
+      selectedDate
+    );
+  }, [selectedYear, selectedMonth, selectedDate]);
+
+  useEffect(() => {
+    const fetchGoal = async () => {
+      try {
+        const data = await getGoal(selectedYear, selectedMonth);
+        setGoal(data);
+      } catch (error) {
+        console.error("목표 불러오기 실패:", error);
+      }
+    };
+
+    fetchGoal();
+  }, [selectedYear, selectedMonth, setGoal]);
+
+  useEffect(() => {
+    const fetchMonthlyAmount = async () => {
+      try {
+        const data = await getMonthlyAmount(selectedYear, selectedMonth);
+        setMonthlyAmount({
+          totalGoalAmount: data.totalGoalAmount,
+          totalExpenseAmount: data.totalExpenseAmount,
+          totalIncomeAmount: data.totalIncomeAmount,
+        });
+      } catch (err) {
+        console.error("이번달 금액 정보 불러오기 실패:", err);
+      }
+    };
+
+    fetchMonthlyAmount();
+  }, [selectedYear, selectedMonth, setMonthlyAmount]);
+
+  useEffect(() => {
+    const fetchSpendingCount = async () => {
+      try {
+        const data = await getExpenseCount(selectedYear, selectedMonth);
+        setSpendingCount({
+          totalExpenseCount: data.totalExpenseCount,
+          impulseCount: data.impulseCount,
+          plannedCount: data.plannedCount,
+        });
+      } catch (err) {
+        console.error("이번달 소비 개수 불러오기 실패:", err);
+      }
+    };
+    fetchSpendingCount();
+  }, [selectedYear, selectedMonth, setSpendingCount]);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const data = await getThisMonthIncomeExpenseBalance(
+          selectedYear,
+          selectedMonth
+        );
+        setCalendarSummary(data);
+      } catch (err) {
+        console.error("달력 요약 불러오기 실패:", err);
+      }
+    };
+
+    fetchSummary();
+  }, [selectedYear, selectedMonth, setCalendarSummary]);
+
+  useEffect(() => {
+    const fetchMonthlyFeedbackData = async () => {
+      try {
+        const data = await postMonthlyFeedback(selectedYear, selectedMonth);
+        setFeedback(data);
+      } catch (err) {
+        console.error("월별 피드백 불러오기 실패:", err);
+      }
+    };
+
+    fetchMonthlyFeedbackData();
+  }, [selectedYear, selectedMonth, setFeedback]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const dateStr = `${selectedYear}-${String(selectedMonth).padStart(
+          2,
+          "0"
+        )}-${String(selectedDate).padStart(2, "0")}`;
+        const data = await getTransaction(dateStr);
+        setTransactions(data);
+      } catch (err) {
+        console.error("거래 내역 불러오기 실패:", err);
+        setTransactions([]);
+      }
+    };
+
+    fetchTransactions();
+  }, [selectedYear, selectedMonth, selectedDate, setTransactions]);
 
   return (
     <div className="p-4 bg-app-bg">
       <div className="flex justify-between items-start">
         <p className="font-bold text-xl pb-4">{APP_INFO.NAME}</p>
-        <Button
-          variant="noneBgApp"
-          icon={<ICONS.SETTING />}
-          className="w-[2rem] h-[2rem] text-3xl font-medium text-icon-gray mb-1"
-        />
+
+        {/* 톱니바퀴 버튼 */}
+        <div className="relative">
+          <Button
+            variant="noneBgApp"
+            icon={<ICONS.SETTING />}
+            className="w-[2rem] h-[2rem] text-3xl font-medium text-icon-gray mb-1"
+            onClick={() => setMenuOpen((prev) => !prev)}
+          />
+
+          {/* 드롭다운 메뉴 */}
+          {menuOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-10">
+              <button
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => {
+                  navigate("/update-goal");
+                  setMenuOpen(false);
+                }}
+              >
+                {LABELS.BUTTON.GOAL_UPDATE}
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => {
+                  navigate("/update-amount");
+                  setMenuOpen(false);
+                }}
+              >
+                {LABELS.BUTTON.TARGET_SPENDING_AMOUNT}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <Card className="flex flex-col p-5 bg-white-default mb-2">
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <p className="text-m text-text-gray font-semibold text-sm pb-1">
-              데이의 한마디
+              {mascot.koreanName}
+              {LABELS.GENERAL.ADVICE}
             </p>
             <p className="text-text-primary text-xl font-medium pb-8">
-              다경아, 잘하고 있어!
+              {mascot.description}
             </p>
             <p className="text-text-primary text-m">
-              점심 먹고 커피를 자주 먹네요! 커피를 조금 더 줄여봐야합니다.
+              {summary || "생각하는 중..."}
             </p>
           </div>
           <img
-            src={IMAGES.MASCOT.SINGLE.DAY}
+            src={mascot.image}
             className="w-[10rem] h-[10rem] mx-auto my-4"
           />
         </div>
@@ -54,14 +231,23 @@ const HomePage = () => {
               <p className="text-text-gray font-semibold text-sm">
                 {LABELS.GENERAL.PLANNED_SPENDING_COUNT}
               </p>
-              <p className="text-text-gray text-sm font-medium">총 30개</p>
+              <p className="text-text-gray text-sm font-medium">
+                총 {totalExpenseCount}
+                {UNITS.ITEM}
+              </p>
             </div>
+
             <div className="flex items-center justify-between">
               <img
                 src={IMAGES.MASCOT.SINGLE.NOT}
                 className="w-[3rem] h-[3rem] mr-4 my-4"
               />
-              <ProgressBar label="즉흥" value={20} total={40} variant="red" />
+              <ProgressBar
+                label={LABELS.GENERAL.IMPULSIVE}
+                value={impulseCount}
+                total={totalExpenseCount}
+                variant="red"
+              />
             </div>
 
             <div className="flex items-center justify-between">
@@ -69,14 +255,19 @@ const HomePage = () => {
                 src={IMAGES.MASCOT.SINGLE.DAY}
                 className="w-[3rem] h-[3rem] mr-4 my-4"
               />
-              <ProgressBar label="계획" value={10} total={40} variant="green" />
+              <ProgressBar
+                label={LABELS.GENERAL.PLANNED}
+                value={plannedCount}
+                total={totalExpenseCount}
+                variant="green"
+              />
             </div>
           </div>
         </Card>
 
         <Card className="h-[12.8rem] bg-white-default w-[8rem] flex items-center justify-center">
           <img
-            src={IMAGES.MASCOT.ACTIVE.DAY}
+            src={mascot.activeImage}
             className="w-[22rem] h-[7rem] mx-auto my-4"
           />
         </Card>
@@ -86,15 +277,22 @@ const HomePage = () => {
         <div className="items-start">
           <div className="flex items-start">
             <div className="flex flex-col w-[12rem]">
-              <Status className="w-[4rem] rounded-lg">D-10</Status>
+              <Status className="w-[4rem] rounded-lg">
+                {SYMBOLS.D_DAY}
+                {remainingDays}
+              </Status>
               <p className="text-text-gray font-medium text-sm mt-2">
                 {LABELS.GENERAL.CURRENT_MONTH_GOAL}
               </p>
               <p className="text-text-primary text-lg mt-1">
-                커피 10잔만 마시기
+                {goal ? goal.goal : "목표 불러오는 중..."}
               </p>
             </div>
-            <ProgressCircle current={8} goal={10} mode="fraction" />
+            <ProgressCircle
+              current={goal ? goal.currentCount : 0}
+              goal={goal ? goal.targetCount : 0}
+              mode="fraction"
+            />
           </div>
 
           <div className="w-full h-[0.1rem] bg-border-line my-2"></div>
@@ -103,7 +301,10 @@ const HomePage = () => {
             <p className="text-text-gray text-sm font-medium">
               {LABELS.GENERAL.CURRENT_MONTH_GOAL_SPENDING}
             </p>
-            <p className="text-text-gray text-[1rem] font-medium">500,000원</p>
+            <p className="text-text-primary text-base mt-1">
+              {formatCurrency(totalGoalAmount || 0)}
+              {UNITS.WON}
+            </p>
           </div>
         </div>
       </Card>
@@ -115,7 +316,9 @@ const HomePage = () => {
               {LABELS.GENERAL.CURRENT_MONTH_INCOME}
             </p>
             <p className="text-text-green font-medium">
-              {SYMBOLS.PLUS}400,000원
+              {SYMBOLS.PLUS}
+              {formatCurrency(totalIncomeAmount || 0)}
+              {UNITS.WON}
             </p>
           </div>
 
@@ -126,7 +329,9 @@ const HomePage = () => {
               {LABELS.GENERAL.CURRENT_MONTH_SPENDING}
             </p>
             <p className="text-text-green font-medium">
-              {SYMBOLS.MINUS}500,000원
+              {SYMBOLS.MINUS}
+              {formatCurrency(totalExpenseAmount || 0)}
+              {UNITS.WON}
             </p>
           </div>
         </div>
@@ -138,39 +343,35 @@ const HomePage = () => {
 
       <Card className="p-5 bg-white-default mb-2">
         <div>
-          <div className="flex items-start justify-between mb-2">
-            <p className="text-text-gray font-medium text-sm mb-4">11월 27일</p>
-            <Button
-              variant="noneBgWhite"
-              icon={<ICONS.PLUS />}
-              className="w-[2.9rem] h-[0rem] text-sm font-medium text-icon-gray"
-            >
-              {LABELS.BUTTON.PLUS}
-            </Button>
+          <div className="flex justify-between items-start mb-4">
+            <p className="text-text-gray font-medium text-sm mb-4">
+              {selectedMonth}
+              {UNITS.MONTH} {selectedDate}
+              {UNITS.DATE}
+            </p>
+            <div className="relative">
+              <Button
+                variant="noneBgWhite"
+                icon={<ICONS.PLUS />}
+                className="w-[2rem] h-[0rem] text-[0.8rem] font-medium text-icon-gray text-right"
+                onClick={() => navigate("/add")}
+              >
+                {LABELS.BUTTON.PLUS}
+              </Button>
+            </div>
           </div>
 
           <div className="flex-col">
-            <SpendingItem
-              type="Spending"
-              name="블루버튼 보드게임"
-              statusVariant="outLine"
-              category="놀거리"
-              price={formatCurrency(344400)}
-            />
-            <SpendingItem
-              type="Spending"
-              name="블루버튼 보드게임"
-              statusVariant="outLine"
-              category="식비"
-              price={formatCurrency(101330)}
-            />
-            <SpendingItem
-              type="Spending"
-              name="우리에게 오늘도 많은 것을으릉르을으르으릉르ㅡ"
-              statusVariant="grayBg"
-              category="공과금"
-              price={formatCurrency(40)}
-            />
+            {transactions.map((t) => (
+              <SpendingItem
+                key={t.id}
+                type="Spending"
+                name={t.itemName}
+                statusVariant={t.planType == "PLANNED" ? "outLine" : "grayBg"}
+                category={t.category}
+                price={formatCurrency(t.price)}
+              />
+            ))}
           </div>
         </div>
       </Card>

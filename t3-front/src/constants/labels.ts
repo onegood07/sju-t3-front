@@ -1,9 +1,9 @@
-import type { Mascot } from "../types/mascot";
-
 export const LABELS = {
   PAGE: {
-    CHATTINGLIST: "채팅 목록",
+    CHATTING_LIST: "채팅 목록",
     ADD_SPENDING: "내역 추가",
+    GOAL_UPDATE: "목표 수정",
+    TARGET_SPENDING_AMOUNT: "소비 예산 수정",
   },
   GENERAL: {
     CURRENT_MONTH_GOAL: "이번달 목표",
@@ -11,6 +11,10 @@ export const LABELS = {
     CURRENT_MONTH_SPENDING: "이번달 총 소비",
     CURRENT_MONTH_INCOME: "이번달 총 수입",
     PLANNED_SPENDING_COUNT: "이번달 계획소비 개수",
+    TARGET_COUNT: "이번달 목표 수치",
+    IMPULSIVE: "충동",
+    PLANNED: "계획",
+    ADVICE: "의 한마디",
   },
   BUTTON: {
     INCOME: "수입",
@@ -20,25 +24,25 @@ export const LABELS = {
     CONFIRM: "확인",
     IMPULSIVE_SPENDING: "충동적 소비",
     PLANNED_SPENDING: "계획적 소비",
-    PLUS: "추가",
+    PLUS: "추가하기",
     SAVE: "저장하기",
+    GOAL_UPDATE: "목표 수정하기",
+    TARGET_SPENDING_AMOUNT: "소비예산 수정하기",
   },
   INPUT: {
     DATE: "날짜",
     PRICE: "금액",
     CATEGORY: "분류",
-    DETAIL: "내용",
+    ITEM_NAME: "항목 이름",
     MEMO: "메모",
+    CHOICE: "선택",
     IS_IMPULSIVE_SPENDING: "충동 소비 여부",
     PLACEHOLDER: {
       DATE: "날짜를 입력하세요",
       PRICE: "금액을 입력하세요",
       CATEGORY: "카테고리를 선택하세요",
-      DETAIL: "내용을 입력하세요",
+      ITEM_NAME: "내용을 입력하세요",
       MEMO: "메모를 입력하세요",
     },
-  },
-  DYNAMIC: {
-    ADVICE: (mascot: Mascot) => `${mascot.name}의 한마디`,
   },
 } as const;

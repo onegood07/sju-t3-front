@@ -2,35 +2,32 @@ import { create } from "zustand";
 
 interface AuthState {
   token: string | null;
-  isLoggedIn: boolean;
-  setToken: (token: string | null) => void;
+  userId: number | null;
+
+  setToken: (token: string) => void;
+  setUserId: (id: number) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  token: sessionStorage.getItem("token"),
-  isLoggedIn: !!sessionStorage.getItem("token"),
+  token: sessionStorage.getItem("token") || null,
+  userId: sessionStorage.getItem("userId")
+    ? Number(sessionStorage.getItem("userId"))
+    : null,
 
-  setToken: (token) =>
-    set(() => {
-      if (token) {
-        sessionStorage.setItem("token", token);
-      } else {
-        sessionStorage.removeItem("token");
-      }
+  setToken: (token) => {
+    sessionStorage.setItem("token", token);
+    set({ token });
+  },
 
-      return {
-        token,
-        isLoggedIn: !!token,
-      };
-    }),
+  setUserId: (id) => {
+    sessionStorage.setItem("userId", id.toString());
+    set({ userId: id });
+  },
 
-  logout: () =>
-    set(() => {
-      sessionStorage.removeItem("token");
-      return {
-        token: null,
-        isLoggedIn: false,
-      };
-    }),
+  logout: () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userId");
+    set({ token: null, userId: null });
+  },
 }));
