@@ -1,4 +1,5 @@
 export type CharacterType = "not" | "to" | "day";
+export type CharacterUpperType = "NOT" | "TO" | "DAY";
 
 export interface ChatRoom {
   roomId: number;
@@ -34,5 +35,7 @@ export interface ChatSimpleRequest {
 }
 
 export interface DynamicRequest {
-  [key: string]: string;
+  additionalProp1: string;
+  additionalProp2: string;
+  additionalProp3: string;
 }

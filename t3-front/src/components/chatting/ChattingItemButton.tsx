@@ -36,9 +36,7 @@ const ChattingItemButton = ({
       `}
     >
       <div className="flex items-start w-full pb-4 bg-white-default">
-        <div className="w-[3.4rem] h-[3rem] bg-app-bg rounded-full flex items-center justify-center">
-          <img src={mascotImg} className="w-[3rem] h-[3rem]" />
-        </div>
+        <img src={mascotImg} className="w-10" />
 
         <div className="flex justify-start items-start w-full mb-2 ml-4">
           <div className="flex flex-col w-[calc(100%-10rem)] text-left">

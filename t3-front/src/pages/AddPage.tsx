@@ -100,6 +100,7 @@ const AddPage = () => {
             variant="noneBgWhite"
             icon={<ICONS.ARROWBACK />}
             className="w-[1rem] h-[1rem] text-xl font-medium text-icon-gray mb-1"
+            onClick={() => navigate(-1)}
           />
           <p className="text-text-gray text-base font-medium ml-[9rem]">
             {LABELS.PAGE.ADD_SPENDING}

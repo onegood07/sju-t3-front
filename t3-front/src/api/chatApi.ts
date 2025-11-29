@@ -54,7 +54,7 @@ export const patchCharacter = async (
 export const getRoomChatList = async (
   roomId: number
 ): Promise<ChatRoomDetailResponse> => {
-  const res = await api.post<ChatRoomDetailResponse>(
+  const res = await api.get<ChatRoomDetailResponse>(
     `/api/chat/rooms/${roomId}`
   );
 

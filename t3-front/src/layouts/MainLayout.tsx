@@ -18,6 +18,8 @@ const MainLayout: React.FC = () => {
     "/add",
     "/update-goal",
     "/update-amount",
+    "/chatting",
+    "/update-character",
   ];
   const WHITE_BG_PATHS = [
     "/login",
@@ -32,7 +34,9 @@ const MainLayout: React.FC = () => {
     ? "bg-white-default"
     : "bg-app-bg";
 
-  const showTabBar = !NO_TABBAR_PATHS.includes(location.pathname);
+  const showTabBar =
+    !NO_TABBAR_PATHS.includes(location.pathname) &&
+    !location.pathname.startsWith("/chatting/");
 
   const mainScrollClass = showTabBar ? "overflow-y-auto" : "overflow-hidden";
   const paddingBottomClass = showTabBar ? "pb-16" : "pb-0";

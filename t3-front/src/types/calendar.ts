@@ -1,3 +1,4 @@
+// 지출 카테고리
 export const ExpenseCategory = {
   FOOD: "FOOD",
   TRANSPORT: "TRANSPORT",

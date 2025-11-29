@@ -6,3 +6,4 @@ export { useSpendingCountStore } from "./useSpendingCountStore";
 export { useCalendarSummaryStore } from "./useCalendarSummaryStore";
 export { useMonthlyFeedbackStore } from "./useMonthlyFeedbackStore";
 export { useTransactionStore } from "./useTransactionStore";
+export { useChatStore } from "./useChatStore";

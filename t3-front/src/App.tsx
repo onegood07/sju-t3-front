@@ -9,6 +9,7 @@ import AddPage from "./pages/AddPage";
 import ChattingListPage from "./pages/chatting/ChattingListPage";
 import UpdateGoalPage from "./pages/UpdateGoalPage";
 import UpdateTargetAmountPage from "./pages/UpdateTargetAmountPage";
+import ChangeCharacterPage from "./pages/chatting/UpdateCharacterPage";
 
 function App() {
   return (
@@ -20,11 +21,15 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login-success" element={<LoginSuccessPage />} />
           <Route path="/report" element={<ReportPage />} />
-          <Route path="/chatting" element={<ChattingPage />} />
+          <Route path="/chatting/:roomId" element={<ChattingPage />} />
           <Route path="/chatting-list" element={<ChattingListPage />} />
           <Route path="/add" element={<AddPage />} />
           <Route path="/update-goal" element={<UpdateGoalPage />} />
           <Route path="/update-amount" element={<UpdateTargetAmountPage />} />
+          <Route
+            path="/chatting/:roomId/update-character"
+            element={<ChangeCharacterPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -4,6 +4,7 @@ export const LABELS = {
     ADD_SPENDING: "내역 추가",
     GOAL_UPDATE: "목표 수정",
     TARGET_SPENDING_AMOUNT: "소비 예산 수정",
+    CHARACTER: "캐릭터 수정",
   },
   GENERAL: {
     CURRENT_MONTH_GOAL: "이번달 목표",
