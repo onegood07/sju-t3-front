@@ -7,6 +7,8 @@ import ChattingPage from "./pages/chatting/ChattingPage";
 import LoginPage from "./pages/login/LoginPage";
 import AddPage from "./pages/AddPage";
 import ChattingListPage from "./pages/chatting/ChattingListPage";
+import UpdateGoalPage from "./pages/UpdateGoalPage";
+import UpdateTargetAmountPage from "./pages/UpdateTargetAmountPage";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/chatting" element={<ChattingPage />} />
           <Route path="/chatting-list" element={<ChattingListPage />} />
           <Route path="/add" element={<AddPage />} />
+          <Route path="/update-goal" element={<UpdateGoalPage />} />
+          <Route path="/update-amount" element={<UpdateTargetAmountPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
