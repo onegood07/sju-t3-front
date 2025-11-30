@@ -114,6 +114,6 @@ export interface MonthlySummaryFeedbackResponse {
   month: string;
   uptoDate: string;
   summary: string;
-  summary2: string;
+  summary_detailed: string;
   categoryFeedback: string;
 }
