@@ -20,6 +20,8 @@ const MainLayout: React.FC = () => {
     "/update-amount",
     "/chatting",
     "/update-character",
+    "/chatting/new",
+    "/chatting/new/message",
   ];
   const WHITE_BG_PATHS = [
     "/login",
@@ -28,6 +30,7 @@ const MainLayout: React.FC = () => {
     "/chatting-list",
     "/update-goal",
     "/update-amount",
+    "/chatting/new",
   ];
 
   const containerBgClass = WHITE_BG_PATHS.includes(location.pathname)

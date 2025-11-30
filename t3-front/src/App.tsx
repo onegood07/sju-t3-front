@@ -1,15 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
-import LoginSuccessPage from "./pages/login/LoginSuccessPage";
+import LoginSuccessPage from "./pages/Login/LoginSuccessPage";
 import ReportPage from "./pages/ReportPage";
 import ChattingPage from "./pages/chatting/ChattingPage";
-import LoginPage from "./pages/login/LoginPage";
+import LoginPage from "./pages/Login/LoginPage";
 import AddPage from "./pages/AddPage";
 import ChattingListPage from "./pages/chatting/ChattingListPage";
 import UpdateGoalPage from "./pages/UpdateGoalPage";
 import UpdateTargetAmountPage from "./pages/UpdateTargetAmountPage";
 import ChangeCharacterPage from "./pages/chatting/UpdateCharacterPage";
+import CreateNewChattingPage from "./pages/chatting/CreateNewChattingPage";
+import NewChattingPage from "./pages/chatting/NewChattingPage";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
             path="/chatting/:roomId/update-character"
             element={<ChangeCharacterPage />}
           />
+          <Route path="/chatting/new" element={<CreateNewChattingPage />} />
+          <Route path="/chatting/new/message" element={<NewChattingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

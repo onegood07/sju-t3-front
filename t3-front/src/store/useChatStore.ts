@@ -1,4 +1,3 @@
-// store/useChatStore.ts
 import { create } from "zustand";
 import type {
   ChatRoom,
