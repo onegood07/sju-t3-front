@@ -50,6 +50,7 @@ const SpendingItem = ({
         className={"w-[4.4rem] text-xs mr-4 p-[0.2rem]"}
       >
         {getLabel()}
+
       </Status>
 
       <div className="flex justify-between w-full mb-2">
