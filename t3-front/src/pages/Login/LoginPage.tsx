@@ -25,7 +25,7 @@ const LoginPage = () => {
         variant="login"
         icon={<ICONS.LOGIN />}
         onClick={handleLogin}
-        className="mt-28"
+        className="w-full h-12 mt-28"
       >
         {LABELS.BUTTON.LOGIN}
       </Button>

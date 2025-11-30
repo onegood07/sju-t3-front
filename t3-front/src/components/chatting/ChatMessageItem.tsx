@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ChatMessageItemProps {
   role: "USER" | "ASSISTANT";
   content: string;
@@ -11,7 +9,7 @@ const ChatMessageItem = ({ role, content, time }: ChatMessageItemProps) => {
 
   return (
     <div
-      className={`flex w-full mb-3 ${
+      className={`flex w-full mb-7 ${
         isUser ? "justify-end" : "justify-start"
       } items-end`}
     >
@@ -32,10 +30,11 @@ const ChatMessageItem = ({ role, content, time }: ChatMessageItemProps) => {
 
         {time && (
           <p className="text-[0.6rem] text-text-gray opacity-60">
-            {new Date(time).toLocaleTimeString([], {
+            {new Date(time + "Z").toLocaleTimeString("ko-KR", {
               hour: "2-digit",
               minute: "2-digit",
               hour12: false,
+              timeZone: "Asia/Seoul",
             })}
           </p>
         )}

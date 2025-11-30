@@ -86,7 +86,11 @@ const UpdateGoalPage = () => {
         />
       </div>
 
-      <Button variant="primary" className="mt-[3rem]" onClick={handleSave}>
+      <Button
+        variant="primary"
+        className="mt-[3rem] w-full h-12"
+        onClick={handleSave}
+      >
         {LABELS.BUTTON.SAVE}
       </Button>
     </div>

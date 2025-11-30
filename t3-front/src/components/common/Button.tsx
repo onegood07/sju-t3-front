@@ -28,7 +28,7 @@ export default function Button({
   icon,
 }: ButtonProps) {
   const baseStyles =
-    "w-full py-3 rounded-xl font-semibold text-center transition active:scale-[0.98]";
+    "rounded-xl font-semibold text-center transition active:scale-[0.98]";
 
   const variantClasses = {
     noneBgApp: "bg-app-bg border-none",

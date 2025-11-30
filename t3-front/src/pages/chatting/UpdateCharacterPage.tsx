@@ -3,27 +3,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components";
 import { LABELS, ICONS, IMAGES } from "../../constants";
 import { patchCharacter } from "../../api";
-import type { CharacterUpperType } from "../../types";
+import type { CharacterType } from "../../types";
 
-const mascots: { name: CharacterUpperType; koreanName: string }[] = [
-  { name: "NOT", koreanName: "낫" },
-  { name: "TO", koreanName: "투" },
-  { name: "DAY", koreanName: "데이" },
+const mascots: { name: CharacterType; koreanName: string }[] = [
+  { name: "not", koreanName: "낫" },
+  { name: "to", koreanName: "투" },
+  { name: "day", koreanName: "데이" },
 ];
 
 const UpdateCharacterPage = () => {
   const navigate = useNavigate();
   const { roomId } = useParams<{ roomId: string }>();
-  const [selectedMascot, setSelectedMascot] =
-    useState<CharacterUpperType>("NOT");
+  const [selectedMascot, setSelectedMascot] = useState<CharacterType>("not");
 
   const handleSave = async () => {
     if (!roomId) return;
     try {
       await patchCharacter(Number(roomId), {
-        additionalProp1: selectedMascot,
-        additionalProp2: "",
-        additionalProp3: "",
+        character: selectedMascot,
       });
       alert("캐릭터가 저장되었습니다.");
       navigate(-1);
@@ -35,15 +32,15 @@ const UpdateCharacterPage = () => {
 
   return (
     <div className="p-4">
-      {/* 상단 */}
-      <div className="flex items-center mb-4">
+      <div className="relative flex items-center mb-4">
         <Button
           variant="noneBgApp"
           icon={<ICONS.ARROWBACK />}
           className="w-[1.2rem] h-[1.2rem] text-xl text-icon-gray"
           onClick={() => navigate(-1)}
         />
-        <p className="text-text-gray text-base font-medium ml-4">
+
+        <p className="absolute left-1/2 -translate-x-1/2 text-text-gray text-base font-medium">
           {LABELS.PAGE.CHARACTER}
         </p>
       </div>
@@ -76,7 +73,11 @@ const UpdateCharacterPage = () => {
       </div>
 
       {/* 저장 버튼 */}
-      <Button variant="primary" className="mt-8 w-full" onClick={handleSave}>
+      <Button
+        variant="primary"
+        className="mt-8 w-full h-12"
+        onClick={handleSave}
+      >
         {LABELS.BUTTON.SAVE}
       </Button>
     </div>
