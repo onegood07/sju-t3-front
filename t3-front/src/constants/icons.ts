@@ -6,6 +6,7 @@ import { TbSettings } from "react-icons/tb";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { LuMessageCirclePlus } from "react-icons/lu";
 import { IoSend } from "react-icons/io5";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
 
 export const ICONS = {
   LOGIN: FaComment,
@@ -22,4 +23,5 @@ export const ICONS = {
   SEND: IoSend,
   CHAT_PLUS: LuMessageCirclePlus,
   CALENDAR: FaRegCalendarAlt,
+  INCOME: RiMoneyDollarCircleLine,
 } as const;

@@ -379,11 +379,13 @@ const HomePage = () => {
               return (
                 <SpendingItem
                   key={t.id}
-                  type={t.incomeType === "EXPENSE" ? "Spending" : "Income"}
-                  name={t.itemName}
-                  statusVariant={
-                    t.planType === "PLANNED" ? "outLine" : "grayBg"
+                  type={t.incomeType}
+                  expenseType={
+                    t.incomeType == "EXPENSE" && t.planType == "IMPULSE"
+                      ? "IMPULSE"
+                      : "PLANNED"
                   }
+                  name={t.itemName}
                   category={categoryLabel}
                   price={formatCurrency(t.price)}
                 />

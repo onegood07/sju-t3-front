@@ -1,6 +1,6 @@
 import React from "react";
 
-type StatusVariant = "outLine" | "grayBg";
+type StatusVariant = "planned" | "impulse" | "income";
 
 interface StatusProps {
   children: React.ReactNode;
@@ -12,12 +12,13 @@ interface StatusProps {
 const Status = ({
   children,
   className = "",
-  variant = "outLine",
+  variant = "planned",
   icon,
 }: StatusProps) => {
   const variantClasses = {
-    outLine: "bg-bg-tag-success text-text-green border-text-green",
-    grayBg: "bg-bg-input text-text-gray",
+    planned: "bg-bg-tag-success text-text-green border-text-green",
+    income: "bg-bg-input text-text-gray",
+    impulse: "bg-bg-red text-primary-red",
   };
 
   return (
