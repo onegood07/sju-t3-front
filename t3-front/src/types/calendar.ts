@@ -39,7 +39,7 @@ export const IncomeCategory = {
   REFUND: "REFUND",
   INTEREST: "INTEREST",
   ETC: "ETC",
-  SIDE_INCOME: "SIDE_INCOME",
+  SIDE: "SIDE",
 } as const;
 
 export const IncomeCategoryLabel: Record<keyof typeof IncomeCategory, string> =
@@ -49,7 +49,7 @@ export const IncomeCategoryLabel: Record<keyof typeof IncomeCategory, string> =
     REFUND: "환급",
     INTEREST: "이자",
     ETC: "기타",
-    SIDE_INCOME: "부수입",
+    SIDE: "부수입",
   };
 
 export type ExpenseCategoryType =
