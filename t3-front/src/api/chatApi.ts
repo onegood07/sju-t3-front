@@ -4,7 +4,7 @@ import type {
   ChatMessageRequest,
   ChatRoomDetailResponse,
   ChatSimpleRequest,
-  DynamicRequest,
+  CharacterUpdateRequest,
   ChatRoom,
 } from "../types/";
 
@@ -40,9 +40,9 @@ export const postChatting = async (
 // MARK: POST - 캐릭터
 export const patchCharacter = async (
   roomId: number,
-  body: DynamicRequest
+  body: CharacterUpdateRequest
 ): Promise<ChatRoom> => {
-  const res = await api.post<ChatRoom>(
+  const res = await api.patch<ChatRoom>(
     `/api/chat/rooms/${roomId}/character`,
     body
   );

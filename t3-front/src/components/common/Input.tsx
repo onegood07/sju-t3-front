@@ -1,6 +1,14 @@
 import React from "react";
 
 interface InputProps {
+  htmlType?:
+    | "text"
+    | "password"
+    | "email"
+    | "number"
+    | "date"
+    | "time"
+    | "datetime-local";
   inputType: "input" | "chatting";
   placeholder?: string;
   value?: string | number;
@@ -11,6 +19,7 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
+  htmlType = "text",
   inputType,
   placeholder,
   value,
@@ -36,7 +45,7 @@ const Input: React.FC<InputProps> = ({
       )}
 
       <input
-        type="text"
+        type={htmlType}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}

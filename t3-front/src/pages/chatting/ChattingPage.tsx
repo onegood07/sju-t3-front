@@ -13,7 +13,6 @@ const ChattingPage = () => {
   const [isSending, setIsSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 채팅방 데이터 불러오기
   useEffect(() => {
     const fetchRoom = async () => {
       if (!roomId) return;
@@ -27,24 +26,20 @@ const ChattingPage = () => {
     fetchRoom();
   }, [roomId, setCurrentRoom]);
 
-  // 메시지 추가될 때 자동 스크롤
   useEffect(() => {
     scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
   }, [currentRoom, isSending]);
 
-  // 그룹핑 함수 수정
   const groupMessagesByDate = () => {
     if (!currentRoom?.messages) return {};
-    // 현재 메시지 복사
     let messages = [...currentRoom.messages];
 
-    // 전송 중이면 마지막에 가상 메시지 추가
     if (isSending) {
       messages.push({
         id: -1,
         role: "ASSISTANT",
-        content: "생각중...",
-        createdAt: new Date().toISOString(),
+        content: "답변 작성 중...",
+        createdAt: "",
       });
     }
 
@@ -63,22 +58,32 @@ const ChattingPage = () => {
 
   const groupedMessages = groupMessagesByDate();
 
-  // 메시지 전송
   const handleSendMessage = async () => {
     if (!chattingText.trim() || !roomId) return;
 
-    setIsSending(true); // 전송 시작
+    const tempMessage = {
+      id: Date.now(),
+      role: "USER",
+      content: chattingText,
+      createdAt: "",
+    };
+    setCurrentRoom({
+      ...currentRoom!,
+      messages: [...currentRoom!.messages, tempMessage],
+    });
+    setChattingText("");
+    setIsSending(true);
+
     try {
       const updatedRoom = await postChatting(Number(roomId), {
         message: chattingText,
       });
 
       setCurrentRoom(updatedRoom);
-      setChattingText("");
     } catch (err) {
       console.error("메시지 전송 실패:", err);
     } finally {
-      setIsSending(false); // 전송 종료
+      setIsSending(false);
     }
   };
 
@@ -90,7 +95,7 @@ const ChattingPage = () => {
           variant="noneBgApp"
           icon={<ICONS.ARROWBACK />}
           className="w-[1.2rem] h-[1.2rem] text-xl text-icon-gray"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/chatting-list")}
         />
         <p className="text-text-gray text-base font-medium">
           {currentRoom?.roomTitle || "채팅방"}
@@ -98,7 +103,7 @@ const ChattingPage = () => {
         <Button
           variant="noneBgApp"
           icon={<ICONS.SETTING />}
-          className="w-[1.2rem] h-[1.3rem] text-xl text-icon-gray"
+          className="w-[1.5rem] h-[1.5rem] text-xl text-icon-gray"
           onClick={() => {
             if (roomId) {
               navigate(`/chatting/${roomId}/update-character`);
@@ -110,11 +115,19 @@ const ChattingPage = () => {
       {/* 메시지 영역 */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto mb-3 p-2 rounded-lg shadow-sm"
+        className="flex-1 overflow-y-auto mb-3 p-2 rounded-lg"
       >
         {Object.entries(groupedMessages).map(([date, messages]) => (
           <div key={date} className="mb-4">
-            <p className="text-center text-gray-400 text-sm my-2">{date}</p>
+            {!isSending && (
+              <div className="flex justify-center my-4 mb-6">
+                <div className="flex items-center px-3 py-1 rounded-full bg-gray-100">
+                  <ICONS.CALENDAR className="w-4 h-4 mr-2 text-text-gray" />
+                  <p className="text-gray-500 text-sm font-medium">{date}</p>
+                </div>
+              </div>
+            )}
+
             {messages.map((msg) => (
               <ChatMessageItem
                 key={msg.id}
@@ -139,8 +152,11 @@ const ChattingPage = () => {
         <Button
           variant="primary"
           icon={<ICONS.SEND />}
-          className="w-8 h-8 p-1 text-base ml-2"
+          className={`w-12 h-12 p-1 ml-2 !rounded-full ${
+            isSending ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           onClick={handleSendMessage}
+          disabled={isSending}
         />
       </div>
     </div>

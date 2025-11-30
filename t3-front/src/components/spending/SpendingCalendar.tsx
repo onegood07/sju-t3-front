@@ -11,6 +11,7 @@ const formatCurrency = (amount: number): string =>
 
 interface CustomTileProperties {
   date: Date;
+
   view: "century" | "decade" | "year" | "month";
 }
 
@@ -21,22 +22,19 @@ const SpendingCalendar = () => {
   const { dailySummaries, selectDate, selectedDailySummary } =
     useCalendarSummaryStore();
 
-  // 현재 선택된 날짜
   const value = useMemo(
     () => new Date(selectedYear, selectedMonth - 1, selectedDate),
+
     [selectedYear, selectedMonth, selectedDate]
   );
 
-  // 날짜 클릭 시
   const handleChange: CalendarProps["onChange"] = (v) => {
     if (!v || Array.isArray(v)) return;
 
     const y = v.getFullYear();
     const m = v.getMonth() + 1;
     const d = v.getDate();
-
     setFullDate(y, m, d);
-
     const dateKey = dayjs(v).format("YYYY-MM-DD");
     selectDate(dateKey);
   };
@@ -49,16 +47,11 @@ const SpendingCalendar = () => {
       const dateKey = dayjs(date).format("YYYY-MM-DD");
       const summary = dailySummaries.find((s) => s.date === dateKey);
 
-      if (summary) {
-        const netAmount = summary.totalIncome - summary.totalExpense;
+      if (summary && summary.totalExpense > 0) {
         return (
-          <p
-            className={`text-left text-[0.6rem] mt-1 leading-tight ${
-              netAmount >= 0 ? "text-text-green" : "text-text-red"
-            }`}
-          >
-            {netAmount >= 0 ? `${SYMBOLS.PLUS}` : `${SYMBOLS.MINUS}`}
-            {formatCurrency(Math.abs(netAmount))}
+          <p className="absolute bottom-0 left-0 right-0 text-center text-[0.6rem] leading-tight text-text-red-500">
+            {SYMBOLS.MINUS}
+            {formatCurrency(summary.totalExpense)}
           </p>
         );
       }
@@ -67,20 +60,39 @@ const SpendingCalendar = () => {
   };
 
   const tileClassName = ({ date, view }: CustomTileProperties) => {
+    let classes = "relative";
+    const today = dayjs().startOf("day");
+    const tileDay = dayjs(date).startOf("day");
+    const isToday = tileDay.isSame(today);
+
     if (view === "month") {
       const dayOfWeek = date.getDay();
-      if (dayOfWeek === 0) return "text-red-500";
-      if (dayOfWeek === 6) return "text-blue-500";
+
+      if (dayOfWeek === 0) classes += " text-red-500";
+      if (dayOfWeek === 6) classes += " text-blue-500";
 
       const dateKey = dayjs(date).format("YYYY-MM-DD");
-      if (selectedDailySummary?.date === dateKey)
-        return "bg-yellow-100 rounded-md";
+      const isSelected = selectedDailySummary?.date === dateKey;
+
+      if (isToday) {
+        if (!isSelected) {
+          classes += " text-primary-green-text";
+        }
+      }
+
+      if (isSelected) {
+        if (isToday) {
+          classes += " today-selected-style";
+        } else {
+          classes += " selected-style";
+        }
+      }
     }
-    return "";
+    return classes;
   };
 
   return (
-    <div className="spending-calendar-container">
+    <div className="spending-calendar-container mx-auto">
       <Calendar
         onChange={handleChange}
         value={value}

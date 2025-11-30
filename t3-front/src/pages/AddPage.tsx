@@ -8,6 +8,7 @@ import type {
   IncomeOrExpense,
   TransactionRequest,
 } from "../types";
+import { ExpenseCategoryLabel, IncomeCategoryLabel } from "../types";
 import { updateTransaction } from "../api";
 import { useAuthStore } from "../store";
 
@@ -68,9 +69,9 @@ const AddPage = () => {
       dateTime: isoDate,
       incomeOrExpense,
       category: selectedCategory as CategoryType,
-      itemName: itemName,
+      itemName,
       price: Number(price),
-      planType,
+      planType: planType,
       memo,
     };
 
@@ -86,6 +87,7 @@ const AddPage = () => {
       setMemo("");
       setPlanType("PLANNED");
       setIncomeOrExpense("EXPENSE");
+      navigate("/home");
     } catch (err) {
       console.error("저장 실패:", err);
       alert("저장 실패");
@@ -107,9 +109,9 @@ const AddPage = () => {
           </p>
         </div>
       </div>
-      {/* 수입 / 지출 선택 */}
       <div className="flex items-start justify-between mb-4 mt-4 gap-4">
         <Button
+          className="w-full h-12"
           variant={incomeOrExpense === "INCOME" ? "outLine" : "grayBg"}
           onClick={() => {
             setIncomeOrExpense("INCOME");
@@ -119,6 +121,7 @@ const AddPage = () => {
           {LABELS.BUTTON.INCOME}
         </Button>
         <Button
+          className="w-full h-12"
           variant={incomeOrExpense === "EXPENSE" ? "outLine" : "grayBg"}
           onClick={() => {
             setIncomeOrExpense("EXPENSE");
@@ -128,10 +131,9 @@ const AddPage = () => {
           {LABELS.BUTTON.SPENDING}
         </Button>
       </div>
-
-      {/* 입력 폼 */}
       <div className="flex flex-col gap-5">
         <Input
+          htmlType="date"
           inputType="input"
           label={LABELS.INPUT.DATE}
           placeholder={LABELS.INPUT.PLACEHOLDER.DATE}
@@ -139,6 +141,7 @@ const AddPage = () => {
           onChange={(value: string) => setDate(value)}
         />
         <Input
+          htmlType="number"
           inputType="input"
           label={LABELS.INPUT.PRICE}
           placeholder={LABELS.INPUT.PLACEHOLDER.PRICE}
@@ -161,7 +164,9 @@ const AddPage = () => {
             </option>
             {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
-                {cat}
+                {incomeOrExpense === "INCOME"
+                  ? IncomeCategoryLabel[cat as keyof typeof IncomeCategory]
+                  : ExpenseCategoryLabel[cat as keyof typeof ExpenseCategory]}
               </option>
             ))}
           </select>
@@ -182,26 +187,36 @@ const AddPage = () => {
         />
       </div>
 
-      <label className="block text-sm font-medium text-text-primary mb-2 mt-4">
-        {LABELS.INPUT.IS_IMPULSIVE_SPENDING}
-      </label>
+      {incomeOrExpense === "EXPENSE" && (
+        <>
+          <label className="block text-sm font-medium text-text-primary mb-2 mt-4">
+            {LABELS.INPUT.IS_IMPULSIVE_SPENDING}
+          </label>
 
-      <div className="flex items-start justify-between gap-4 mb-2">
-        <Button
-          variant={planType === "PLANNED" ? "outLine" : "grayBg"}
-          onClick={() => setPlanType("PLANNED")}
-        >
-          {LABELS.BUTTON.PLANNED_SPENDING}
-        </Button>
-        <Button
-          variant={planType === "IMPULSE" ? "outLine" : "grayBg"}
-          onClick={() => setPlanType("IMPULSE")}
-        >
-          {LABELS.BUTTON.IMPULSIVE_SPENDING}
-        </Button>
-      </div>
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <Button
+              className="w-full h-12"
+              variant={planType === "PLANNED" ? "outLine" : "grayBg"}
+              onClick={() => setPlanType("PLANNED")}
+            >
+              {LABELS.BUTTON.PLANNED_SPENDING}
+            </Button>
+            <Button
+              className="w-full h-12"
+              variant={planType === "IMPULSE" ? "outLine" : "grayBg"}
+              onClick={() => setPlanType("IMPULSE")}
+            >
+              {LABELS.BUTTON.IMPULSIVE_SPENDING}
+            </Button>
+          </div>
+        </>
+      )}
 
-      <Button variant="primary" className="mt-10" onClick={handleSave}>
+      <Button
+        variant="primary"
+        className="w-full h-12 mt-10"
+        onClick={handleSave}
+      >
         {LABELS.BUTTON.SAVE}
       </Button>
     </div>

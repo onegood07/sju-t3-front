@@ -5,6 +5,7 @@ export const LABELS = {
     GOAL_UPDATE: "목표 수정",
     TARGET_SPENDING_AMOUNT: "소비 예산 수정",
     CHARACTER: "캐릭터 수정",
+    NEW_CHAT: "새 채팅방 만들기",
   },
   GENERAL: {
     CURRENT_MONTH_GOAL: "이번달 목표",
@@ -25,10 +26,11 @@ export const LABELS = {
     CONFIRM: "확인",
     IMPULSIVE_SPENDING: "충동적 소비",
     PLANNED_SPENDING: "계획적 소비",
-    PLUS: "추가하기",
+    PLUS: "추가",
     SAVE: "저장하기",
     GOAL_UPDATE: "목표 수정하기",
     TARGET_SPENDING_AMOUNT: "소비예산 수정하기",
+    NEXT: "다음",
   },
   INPUT: {
     DATE: "날짜",
@@ -38,6 +40,8 @@ export const LABELS = {
     MEMO: "메모",
     CHOICE: "선택",
     IS_IMPULSIVE_SPENDING: "충동 소비 여부",
+    NEW_CHAT: "채팅방 이름",
+    SELECT_CHARACTER: "캐릭터 선택",
     PLACEHOLDER: {
       DATE: "날짜를 입력하세요",
       PRICE: "금액을 입력하세요",

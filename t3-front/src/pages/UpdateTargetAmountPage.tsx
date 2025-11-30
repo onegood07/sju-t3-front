@@ -81,7 +81,11 @@ const UpdateTargetAmountPage = () => {
         />
       </div>
 
-      <Button variant="primary" className="mt-8" onClick={handleSave}>
+      <Button
+        variant="primary"
+        className="mt-8 w-full h-12"
+        onClick={handleSave}
+      >
         {LABELS.BUTTON.SAVE}
       </Button>
     </div>

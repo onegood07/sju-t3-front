@@ -21,9 +21,11 @@ const SpendingItem = ({
       <Status
         variant={statusVariant}
         icon={statusVariant == "outLine" ? <ICONS.CHECK /> : <ICONS.XMARK />}
-        className="w-[4.4rem] text-xs mr-4 p-[0.2rem]"
+        className={`w-[4.4rem] text-xs mr-4 p-[0.2rem] ${
+          type === "Income" ? "invisible" : ""
+        }`}
       >
-        {statusVariant && statusVariant == "outLine" ? "계획" : "즉흥"}
+        {type === "Spending" && (statusVariant === "outLine" ? "계획" : "즉흥")}
       </Status>
 
       <div className="flex justify-between w-full mb-2">

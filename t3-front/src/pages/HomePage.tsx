@@ -28,6 +28,7 @@ import {
   useMonthlyFeedbackStore,
   useTransactionStore,
 } from "../store/";
+import { ExpenseCategoryLabel, IncomeCategoryLabel } from "../types";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -212,7 +213,7 @@ const HomePage = () => {
             <p className="text-text-primary text-xl font-medium pb-8">
               {mascot.description}
             </p>
-            <p className="text-text-primary text-m">
+            <p className="text-text-primary text-sm">
               {summary || "생각하는 중..."}
             </p>
           </div>
@@ -221,7 +222,9 @@ const HomePage = () => {
             className="w-[10rem] h-[10rem] mx-auto my-4"
           />
         </div>
-        <Button>{LABELS.BUTTON.CHATTING}</Button>
+        <Button className="h-12" onClick={() => navigate("/chatting-list")}>
+          {LABELS.BUTTON.CHATTING}
+        </Button>
       </Card>
 
       <div className="flex items-start justify-between gap-4 mb-2">
@@ -328,7 +331,7 @@ const HomePage = () => {
             <p className="text-text-gray text-sm font-medium mb-2">
               {LABELS.GENERAL.CURRENT_MONTH_SPENDING}
             </p>
-            <p className="text-text-green font-medium">
+            <p className="text-primary-red font-medium">
               {SYMBOLS.MINUS}
               {formatCurrency(totalExpenseAmount || 0)}
               {UNITS.WON}
@@ -341,19 +344,20 @@ const HomePage = () => {
         <SpendingCalendar />
       </Card>
 
-      <Card className="p-5 bg-white-default mb-2">
+      <div className="p-5 bg-white-default mb-2 rounded-xl">
         <div>
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-text-gray font-medium text-sm mb-4">
+          <div className="w-full flex justify-between items-center mb-4">
+            <p className="text-text-gray font-medium text-sm">
               {selectedMonth}
               {UNITS.MONTH} {selectedDate}
               {UNITS.DATE}
             </p>
-            <div className="relative">
+
+            <div className="relative flex-shrink-0">
               <Button
                 variant="noneBgWhite"
                 icon={<ICONS.PLUS />}
-                className="w-[2rem] h-[0rem] text-[0.8rem] font-medium text-icon-gray text-right"
+                className="w-12 h-4 !py-0 flex items-center justify-center text-sm text-icon-gray"
                 onClick={() => navigate("/add")}
               >
                 {LABELS.BUTTON.PLUS}
@@ -361,20 +365,33 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="flex-col">
-            {transactions.map((t) => (
-              <SpendingItem
-                key={t.id}
-                type="Spending"
-                name={t.itemName}
-                statusVariant={t.planType == "PLANNED" ? "outLine" : "grayBg"}
-                category={t.category}
-                price={formatCurrency(t.price)}
-              />
-            ))}
+          <div className="flex flex-col">
+            {transactions.map((t) => {
+              const categoryLabel =
+                t.incomeType === "EXPENSE"
+                  ? ExpenseCategoryLabel[
+                      t.category as keyof typeof ExpenseCategoryLabel
+                    ] || t.category
+                  : IncomeCategoryLabel[
+                      t.category as keyof typeof IncomeCategoryLabel
+                    ] || t.category;
+
+              return (
+                <SpendingItem
+                  key={t.id}
+                  type={t.incomeType === "EXPENSE" ? "Spending" : "Income"}
+                  name={t.itemName}
+                  statusVariant={
+                    t.planType === "PLANNED" ? "outLine" : "grayBg"
+                  }
+                  category={categoryLabel}
+                  price={formatCurrency(t.price)}
+                />
+              );
+            })}
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };
