@@ -43,14 +43,14 @@ export const IncomeCategory = {
 } as const;
 
 export const IncomeCategoryLabel: Record<keyof typeof IncomeCategory, string> =
-  {
-    SALARY: "급여",
-    ALLOWANCE: "용돈",
-    REFUND: "환급",
-    INTEREST: "이자",
-    ETC: "기타",
-    SIDE: "부수입",
-  };
+{
+  SALARY: "급여",
+  ALLOWANCE: "용돈",
+  REFUND: "환급",
+  INTEREST: "이자",
+  ETC: "기타",
+  SIDE: "부수입",
+};
 
 export type ExpenseCategoryType =
   (typeof ExpenseCategory)[keyof typeof ExpenseCategory];
@@ -114,6 +114,6 @@ export interface MonthlySummaryFeedbackResponse {
   month: string;
   uptoDate: string;
   summary: string;
-  summary_detailed: string;
+  summary2: string;
   categoryFeedback: string;
 }
