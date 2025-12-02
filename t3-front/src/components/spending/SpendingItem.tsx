@@ -43,7 +43,7 @@ const SpendingItem = ({
   };
 
   return (
-    <div className="flex items-start w-full pb-4">
+    <div className="flex items-start w-full pb-1">
       <Status
         variant={getStatusVariant()}
         icon={renderIcon()}
@@ -53,7 +53,7 @@ const SpendingItem = ({
 
       </Status>
 
-      <div className="flex justify-between w-full mb-2">
+      <div className="flex justify-between w-full mb-1">
         <div className="flex flex-col w-[10rem]">
           <p className="text-text-primary text-[0.9rem] mb-1 truncate">
             {name}

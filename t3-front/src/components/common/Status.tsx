@@ -1,6 +1,7 @@
 import React from "react";
 
-type StatusVariant = "planned" | "impulse" | "income";
+type StatusVariant = "planned" | "impulse" | "income" | "achieved"
+  | "notAchieved";
 
 interface StatusProps {
   children: React.ReactNode;
@@ -19,6 +20,8 @@ const Status = ({
     planned: "bg-bg-tag-success text-text-green border-text-green",
     income: "bg-bg-input text-text-gray",
     impulse: "bg-bg-red text-primary-red",
+    achieved: "bg-bg-tag-success text-text-green border-text-green",
+    notAchieved: "bg-bg-input text-text-gray",
   };
 
   return (

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Card from "../components/common/Card";
 import ProgressBar from "../components/charts/ProgressBar";
 import CategoryDonutChart from "../components/charts/CategoryDonutChart";
+import Status from "../components/common/Status";
 
 import { IMAGES } from "../constants";
 import { formatCurrency } from "../utils/";
@@ -346,7 +347,7 @@ const ReportPage = () => {
 
             <button
               onClick={() => setShowDetail((prev) => !prev)}
-              className="text-xs text-text-gray"
+              className="text-xs bg-transparent"
             >
               {showDetail ? "접기 ▲" : "자세히 보기 ▼"}
             </button>
@@ -387,31 +388,41 @@ const ReportPage = () => {
                 로딩중
               </span>
             ) : isAchieved ? (
-              <span className="text-[10px] bg-[#D7F7C6] text-green-700 px-2 py-0.5 rounded-md flex items-center gap-1">
-                <svg
-                  className="w-3 h-3 text-green-700"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+              <Status
+                variant="planned"
+                className="text-[10px] px-2 py-0.5 flex items-center gap-1"
+                icon={
+                  <svg
+                    className="w-3 h-3 text-text-green"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                }
+              >
                 달성
-              </span>
+              </Status>
             ) : (
-              <span className="text-[10px] bg-gray-200 text-gray-600 px-2 py-0.5 rounded-md flex items-center gap-1">
-                <svg
-                  className="w-3 h-3 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              <Status
+                variant="impulse"
+                className="text-[10px] px-2 py-0.5 flex items-center gap-1"
+                icon={
+                  <svg
+                    className="w-3 h-3 text-primary-red"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                }
+              >
                 미달성
-              </span>
+              </Status>
             )}
           </div>
 
@@ -422,8 +433,8 @@ const ReportPage = () => {
 
           {/* 설명 - 위쪽 간격 추가! */}
           <p className="text-text-gray text-xs mt-5 leading-relaxed">
-            목표 소비 횟수 {goalData.targetCount}번 중{" "}
-            {goalData.currentCount}번 소비했어요!
+            목표 소비 횟수 {goalData.targetCount || 0}번 중{" "}
+            {goalData.currentCount || 0}번 소비했어요!
           </p>
         </Card>
 
@@ -436,45 +447,55 @@ const ReportPage = () => {
                 로딩중
               </span>
             ) : isBudgetAchieved ? (
-              <span className="text-[10px] bg-[#D7F7C6] text-green-700 px-2 py-0.5 rounded-md flex items-center gap-1">
-                <svg
-                  className="w-3 h-3 text-green-700"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+              <Status
+                variant="planned"
+                className="text-[10px] px-2 py-0.5 flex items-center gap-1"
+                icon={
+                  <svg
+                    className="w-3 h-3 text-text-green"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                }
+              >
                 달성
-              </span>
+              </Status>
             ) : (
-              <span className="text-[10px] bg-gray-200 text-gray-600 px-2 py-0.5 rounded-md flex items-center gap-1">
-                <svg
-                  className="w-3 h-3 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+              <Status
+                variant="impulse"
+                className="text-[10px] px-2 py-0.5 flex items-center gap-1"
+                icon={
+                  <svg
+                    className="w-3 h-3 text-primary-red"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                }
+              >
                 미달성
-              </span>
+              </Status>
             )}
           </div>
 
           <div className="mt-1">
             <p className="text-text-gray text-[11px]">이번달 총 소비</p>
             <p className="text-primary-red text-lg font-bold">
-              -{formatCurrency(monthlyAmount.totalExpenseAmount)}원
+              -{formatCurrency(monthlyAmount.totalExpenseAmount || 0)}원
             </p>
           </div>
 
           <div className="mt-1">
             <p className="text-text-gray text-[11px]">이번달 총 소비 목표 비용</p>
             <p className="text-text-primary text-base font-semibold">
-              {formatCurrency(monthlyAmount.totalGoalAmount)}원
+              {formatCurrency(monthlyAmount.totalGoalAmount || 0)}원
             </p>
           </div>
         </Card>
@@ -483,7 +504,48 @@ const ReportPage = () => {
       {/* 계획소비/즉흥소비 */}
       <Card className="p-5 flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <p className="text-text-gray text-sm">이번달 계획소비 개수</p>
+          <div className="flex items-center gap-2">
+            <p className="text-text-gray text-sm">이번달 계획소비 개수</p>
+
+            {isPlanAchieved ? (
+              <Status
+                variant="planned"
+                className="text-[10px] px-2 py-0.5 flex items-center gap-1"
+                icon={
+                  <svg
+                    className="w-3 h-3 text-text-green"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                }
+              >
+                달성
+              </Status>
+            ) : (
+              <Status
+                variant="impulse"
+                className="text-[10px] px-2 py-0.5 flex items-center gap-1"
+                icon={
+                  <svg
+                    className="w-3 h-3 text-primary-red"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                }
+              >
+                미달성
+              </Status>
+            )}
+          </div>
+
           <p className="text-text-gray text-sm">총 {totalExpenseCount}개</p>
         </div>
 
@@ -519,7 +581,7 @@ const ReportPage = () => {
         <div className="flex items-center gap-3 whitespace-nowrap">
           <span className="text-text-gray text-sm">이번달 총 수입</span>
           <span className="text-text-green font-bold text-base">
-            +{formatCurrency(monthlyAmount.totalIncomeAmount)}원
+            +{formatCurrency(monthlyAmount.totalIncomeAmount || 0)}원
           </span>
         </div>
         <span className="text-text-gray text-xl flex-shrink-0">&gt;</span>
@@ -530,7 +592,7 @@ const ReportPage = () => {
         <div className="flex justify-between">
           <p className="text-text-gray text-sm">이번달 분야별 지출 통계</p>
           <p className="text-text-gray text-sm">
-            총 {formatCurrency(monthlyAmount.totalExpenseAmount)}원
+            총 {formatCurrency(monthlyAmount.totalExpenseAmount || 0)}원
           </p>
         </div>
 
@@ -538,7 +600,7 @@ const ReportPage = () => {
           <CategoryDonutChart
             data={categoryStats.values}
             colors={categoryStats.colors}
-            centerText={formatCurrency(monthlyAmount.totalExpenseAmount)}
+            centerText={formatCurrency(monthlyAmount.totalExpenseAmount || 0)}
           />
         </div>
 
