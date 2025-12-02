@@ -26,11 +26,11 @@ const CategoryKoreanMap: Record<string, string> = {
     HOBBY: "취미/여가",
     FASHION: "패션",
     DRINK: "술/유흥",
-    EVENT: "이벤트",
-    TRAVEL: "여행",
+    EVENT: "경조사",
+    TRAVEL: "여행/숙박",
     DAILY_NECESSITIES: "생필품",
-    FINANCE: "금융",
-    ETC_EXPENSE: "기타",
+    FINANCE: "금융/보험/세금/통신비",
+    ETC_EXPENSE: "기타 지출",
 };
 
 const findCategoryKeyByLabel = (
@@ -43,7 +43,7 @@ const findCategoryKeyByLabel = (
 };
 
 export const toKoreanCategory = (category: string): string => {
-    return CategoryKoreanMap[category] || "기타";
+    return CategoryKoreanMap[category];
 };
 // ==================================================
 //  2) CategoryType narrowing 함수
