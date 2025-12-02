@@ -17,6 +17,22 @@ import type { ExpenseCategoryType, CategoryType } from "../types";
 //  1) 한글 라벨 → 영어 역변환 함수
 //     예: "식비" → "FOOD"
 // ==================================================
+const CategoryKoreanMap: Record<string, string> = {
+    FOOD: "식비",
+    TRANSPORT: "교통비",
+    HOUSING: "주거/공과금",
+    EDUCATION: "교육",
+    HEALTH: "건강/의료",
+    HOBBY: "취미/여가",
+    FASHION: "패션",
+    DRINK: "술/유흥",
+    EVENT: "이벤트",
+    TRAVEL: "여행",
+    DAILY_NECESSITIES: "생필품",
+    FINANCE: "금융",
+    ETC_EXPENSE: "기타",
+};
+
 const findCategoryKeyByLabel = (
     label: string
 ): keyof typeof ExpenseCategoryLabel | null => {
@@ -26,6 +42,9 @@ const findCategoryKeyByLabel = (
     );
 };
 
+export const toKoreanCategory = (category: string): string => {
+    return CategoryKoreanMap[category] || "기타";
+};
 // ==================================================
 //  2) CategoryType narrowing 함수
 // ==================================================
@@ -69,7 +88,10 @@ const CategoryDetailPage = () => {
 
                 const res = await getMonthlyFeedback(year, month);
                 const feedbackJson = JSON.parse(res.categoryFeedback || "{}");
-                const catFeedback = feedbackJson[label];
+                const categoryKey_Eng = findCategoryKeyByLabel(label);
+                if (!categoryKey_Eng) return;
+                const category_gpt = toKoreanCategory(categoryKey_Eng)
+                const catFeedback = feedbackJson[category_gpt];
                 if (catFeedback) {
                     setEvaluation(catFeedback);
                     setAdvice("");
@@ -211,7 +233,7 @@ const CategoryDetailPage = () => {
                         소비 분석
                     </p>
 
-                    {/* 분석 본문 – 글자크기↓, 간격↑ */}
+                    {/* 분석 본문 */}
                     <p className="text-text-primary text-[13px] leading-[1.5] mt-3">
                         {evaluation || "해당 카테고리의 소비 분석을 불러오는 중이에요"}
 
@@ -225,7 +247,14 @@ const CategoryDetailPage = () => {
 
                 <img
                     src={getDetailMascotImage(mascotStatus)}
-                    className="absolute right-0 w-[125px] h-[125px] object-contain translate-y-[0px]"
+                    className="
+                        absolute 
+                        right-2      /* 오른쪽 여백 */
+                        bottom-[-1.65rem]     /* 아래 여백 */
+                        w-[125px]
+                        h-[125px]
+                        object-contain
+                    "
                     alt="frog mascot"
                 />
             </Card>
@@ -242,13 +271,17 @@ const CategoryDetailPage = () => {
                 <Card className="flex flex-col items-center justify-start py-5 min-h-[150px]">
                     {/* 상단 고정 영역 */}
                     <p className="text-text-gray text-xs text-center">
-                        {label} 중 계획 소비 개수
+                        이번달 계획 소비 개수
                     </p>
 
                     {/* 가운데 영역 */}
                     <div className="flex flex-col items-center justify-center flex-1 mt-2">
+                        <p className="text-text-gray text-sm mt-1">
+                            총 {totalCount}개
+                        </p>
+
                         <p className={`text-2xl font-bold ${currentColor}`}>
-                            총 {plannedCount}개
+                            {plannedCount}개
                         </p>
 
                         <p className="text-text-gray text-sm mt-1">{plannedPercent}%</p>
@@ -259,7 +292,7 @@ const CategoryDetailPage = () => {
             {/* 날짜별 내역 */}
             {dailyHistory.map((day, idx) => (
                 <Card key={idx} className="p-4 flex flex-col gap-3">
-                    <p className="text-text-gray text-sm font-semibold">
+                    <p className="text-text-gray text-sm font-semibold mb-5">
                         {new Date(day.date).getMonth() + 1}월{" "}
                         {new Date(day.date).getDate()}일
                     </p>
