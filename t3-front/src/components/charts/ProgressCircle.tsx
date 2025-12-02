@@ -57,11 +57,11 @@ export default function ProgressCircle({
           </span>
         </div>
       ) : (
-        <div className="absolute flex items-end gap-[2px] translate-y-[18px]">
-          <span className="text-text-green font-bold text-[6rem] leading-none">
+        <div className="absolute flex items-end gap-[2px] translate-y-[10px]">
+          <span className="text-text-green font-bold text-2xl leading-none">
             {percent}
           </span>
-          <span className="text-text-gray font-semibold text-[4rem] leading-none">
+          <span className="text-text-gray font-semibold text-lg leading-none">
             {UNITS.PERCENT}
           </span>
         </div>

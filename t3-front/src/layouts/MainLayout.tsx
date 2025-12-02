@@ -22,6 +22,7 @@ const MainLayout: React.FC = () => {
     "/update-character",
     "/chatting/new",
     "/chatting/new/message",
+    "/income",
   ];
   const WHITE_BG_PATHS = [
     "/login",
@@ -74,11 +75,10 @@ const MainLayout: React.FC = () => {
                     }
                   />
                   <span
-                    className={`text-sm mt-1 ${
-                      isActive
-                        ? "text-primary-green font-semibold"
-                        : "text-text-gray"
-                    }`}
+                    className={`text-sm mt-1 ${isActive
+                      ? "text-primary-green font-semibold"
+                      : "text-text-gray"
+                      }`}
                   >
                     {tab.name}
                   </span>
