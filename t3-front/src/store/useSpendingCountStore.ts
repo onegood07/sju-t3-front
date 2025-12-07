@@ -4,8 +4,8 @@ import type { MascotName, MascotKoreanName } from "../types";
 
 const getMascotName = (impulse: number, planned: number): MascotName => {
   const diff = impulse - planned;
-  if (diff >= 5) return "MascotNot";
-  if (diff <= -5) return "MascotDay";
+  if (diff >= 1) return "MascotNot";
+  if (diff <= -1) return "MascotDay";
   return "MascotTo";
 };
 

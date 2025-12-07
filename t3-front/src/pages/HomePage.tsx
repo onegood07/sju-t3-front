@@ -357,7 +357,7 @@ const HomePage = () => {
               <Button
                 variant="noneBgWhite"
                 icon={<ICONS.PLUS />}
-                className="w-12 h-4 !py-0 flex items-center justify-center text-sm text-icon-gray"
+                className="w-14 h-4 !py-0 flex items-center justify-center text-[0.8rem] text-icon-gray"
                 onClick={() => navigate("/add")}
               >
                 {LABELS.BUTTON.PLUS}
